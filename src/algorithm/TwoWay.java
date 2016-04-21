@@ -62,6 +62,7 @@ public class TwoWay implements Mergesort {
 			writer2.close();
 			reader.close();
 			File g1, g2;
+			long s1, s2;
 			for(int k = 1; k < counter; k++){
 				mergesort(k);
 				
@@ -70,9 +71,14 @@ public class TwoWay implements Mergesort {
 				
 				if(!f1.delete() || !f2.delete())
 					throw new IOException();
-				
+
+				s1 = g1.length();
+				s2 = g2.length();
 				g1.renameTo(f1);
 				g2.renameTo(f2);
+				
+				if(s1 == 0 || s2 == 0)
+					break;
 			}
 			
 			
@@ -104,10 +110,11 @@ public class TwoWay implements Mergesort {
 		String line1 = "", line2 = "";
 		String oline;
 		boolean running = true;
-		int counter = 1;
+		int counter, counter1, counter2;
+		counter = 1;
 		
 		while(running){
-			
+
 			if(counter%2 != 0){
 				writer = writer1;
 			}
@@ -115,16 +122,17 @@ public class TwoWay implements Mergesort {
 				writer = writer2;
 			}
 			
-			int i = 0;
+			counter1 = 0;
+			counter2 = 0;
 			
-			for(i = 0; i < (2 * k); i++){
+			while(counter1 < k && counter2 < k){
+				
 				if(line1 == "")
 					line1 = reader1.readLine();
 				if(line2 == "")
 					line2 = reader2.readLine();
 				
 				if(line1 == null || line2 == null){
-					running = false;
 					break;
 				}
 				
@@ -137,48 +145,63 @@ public class TwoWay implements Mergesort {
 				int i1 = Integer.parseInt(line1, this.RADIX);
 				int i2 = Integer.parseInt(line2, this.RADIX);
 				
+
 				if(i1 < i2){
 					oline = Integer.toString(i1) + this.NEW_LINE; //Integer.toBinaryString(i1);
 					line1 = "";
+					counter1++;
 				}
 				else{
 					oline = Integer.toString(i2) + this.NEW_LINE; //Integer.toBinaryString(i2);
 					line2 = "";
+					counter2++;
 				}
 				
 				writer.write(oline);
-				
 			}
-			if(i < (2 * k)){
-				if(line1 != null && line2 == null){
-					oline = line1.replace(this.NEW_LINE, "") + this.NEW_LINE;
-					writer.write(oline);
-					i++;
-					while(i < (2 * k)){
-						oline = reader1.readLine();
-						if(oline == null)
-							break;
-						writer.write(oline);
-						i++;
-					}	
-				}
-				
-				else if(line2 != null && line1 == null){
-					oline = line2.replace(this.NEW_LINE, "") + this.NEW_LINE;
-					writer.write(oline);
+			
+			if(line1 == null && line2 == null){
+				running = false;
+				break;
+			}
+			
+			
+			else if(line1 != null && (line2 == null || line2 == "") && counter1 < k){
+				oline = line1.replace(this.NEW_LINE, "") + this.NEW_LINE;
+				line1 = "";
+				writer.write(oline);
+				counter1++;
+				while(counter1 < k){
+					oline = reader1.readLine();
+					if(oline == null)
+						break;
 					
-					while(i < (2 * k)){
-						oline = reader2.readLine();
-						if(oline == null)
-							break;
-						writer.write(oline);
-						i++;
-					}	
+					counter1++;
+					writer.write(oline);
+				}
+			}
+			else if(line2 != null && (line1 == null || line1 == "") && counter2 < k){
+				oline = line2.replace(this.NEW_LINE, "") + this.NEW_LINE;
+				line2 = "";
+				writer.write(oline);
+				counter2++;
+				while(counter2 < k){
+					oline = reader2.readLine();
+					if(oline == null)
+						break;
+
+					counter2++;
+					writer.write(oline);
 				}
 			}
 			
+			
+			
+			
 			counter++;
 		}
+		
+		
 		
 		reader1.close();
 		reader2.close();
