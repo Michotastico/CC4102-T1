@@ -175,7 +175,7 @@ public class TwoWay implements Mergesort {
 					oline = reader1.readLine();
 					if(oline == null)
 						break;
-					
+					oline = oline.replace(this.NEW_LINE, "") + this.NEW_LINE;
 					counter1++;
 					writer.write(oline);
 				}
@@ -189,7 +189,7 @@ public class TwoWay implements Mergesort {
 					oline = reader2.readLine();
 					if(oline == null)
 						break;
-
+					oline = oline.replace(this.NEW_LINE, "") + this.NEW_LINE;
 					counter2++;
 					writer.write(oline);
 				}
