@@ -16,9 +16,9 @@ public class TwoWay implements Mergesort {
 	private final String PATH_G1 = "Data/twoway/g1.txt";
 	private final String PATH_G2 = "Data/twoway/g2.txt";
 	
-	private final int RADIX = 10; // 2 is binary.
+	private final int RADIX = Cons.RADIX;
 	
-	private final String NEW_LINE = System.getProperty("line.separator");
+	private final String NEW_LINE = Cons.NEW_LINE;
 	
 	public TwoWay(String path){
 		this.file_path = path;
@@ -147,12 +147,12 @@ public class TwoWay implements Mergesort {
 				
 
 				if(i1 < i2){
-					oline = Integer.toString(i1) + this.NEW_LINE; //Integer.toBinaryString(i1);
+					oline = Cons.toString(i1);
 					line1 = "";
 					counter1++;
 				}
 				else{
-					oline = Integer.toString(i2) + this.NEW_LINE; //Integer.toBinaryString(i2);
+					oline = Cons.toString(i2);
 					line2 = "";
 					counter2++;
 				}
