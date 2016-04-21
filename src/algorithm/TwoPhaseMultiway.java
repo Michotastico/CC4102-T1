@@ -5,7 +5,6 @@ import io.ReaderNode;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -53,7 +52,7 @@ public class TwoPhaseMultiway implements Mergesort {
 						break;
 					}
 					line = line.replace(this.NEW_LINE, "");
-					int number = Integer.parseInt(line);
+					int number = Integer.parseInt(line, RADIX);
 					inner_list.add(number);					
 				}
 				
@@ -89,7 +88,7 @@ public class TwoPhaseMultiway implements Mergesort {
 			new_path = "";
 			
 			for(int i = 0; i < counter; i++){
-				new_path = new_path = this.PATH + i + ".txt";
+				new_path = this.PATH + i + ".txt";
 				files.add(new ReaderNode(new_path));
 			}
 			
@@ -135,11 +134,6 @@ public class TwoPhaseMultiway implements Mergesort {
 				lower_node.next();
 				
 			}
-			
-			
-			// FINISH ARRAY OF READER NODES.
-			for(ReaderNode node : files)
-				node.close();
 			
 			writer.close();
 			

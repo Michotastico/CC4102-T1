@@ -5,7 +5,7 @@ import algorithm.*;
 public class Main {
 
 	public static void main(String[] args) {
-		Mergesort merge = new TwoPhaseMultiway("Data/data.txt", 8);
+		Mergesort merge = new Adaptive("Data/data.txt");
 		merge.sort();
 
 	}
