@@ -63,7 +63,7 @@ public class TwoWay implements Mergesort {
 			reader.close();
 			File g1, g2;
 			long s1, s2;
-			for(int k = 1; k < counter; k++){
+			for(int k = 1; k < counter + 1; k = k * 2){
 				mergesort(k);
 				
 				g1 = new File(this.PATH_G1);
