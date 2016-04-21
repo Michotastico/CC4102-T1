@@ -1,6 +1,8 @@
 package algorithm;
 
 import io.AdaptiveNode;
+import io.NullNode;
+import io.ReaderNode;
 import io.ValidNode;
 
 import java.io.BufferedReader;
@@ -11,6 +13,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+
+import javax.crypto.NullCipher;
 
 public class Adaptive implements Mergesort {
 
@@ -111,9 +116,127 @@ public class Adaptive implements Mergesort {
 			files.add(new ValidNode(path, run.size()));
 			
 			
+
+			running = true;
+			
+			while(running){
+				
+				if(files.size() == 1){
+					running = false;
+					break;
+				}
+				
+				Collections.sort(files);
+				
+				AdaptiveNode first_node = files.remove(0);
+				AdaptiveNode second_node = files.remove(0);
+				
+				AdaptiveNode new_node = merge(first_node, second_node);
+				files.add(new_node);
+				
+				
+			}
+			
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+	}
+	
+	private AdaptiveNode merge(AdaptiveNode a, AdaptiveNode b) throws IOException{
+		a.open();
+		b.open();
+		
+		AdaptiveNode return_node = new NullNode();
+		
+		String tmp_path = this.PATH+"TEMP.txt";
+		
+		File file = new File(tmp_path);
+		if (!file.exists()) {
+			file.createNewFile();
+		}
+		
+		BufferedWriter writer = new BufferedWriter(new FileWriter(tmp_path));
+		
+		String line1 = "";
+		String line2 = "";
+		
+		String oline = "";
+		
+		while(true){
+			if(line1 == "")
+				line1 = a.getLine();
+			if(line2 == "")
+				line2 = b.getLine();
+			
+			if(line1 == null || line2 == null){
+				break;
+			}
+			
+			int i1 = Integer.parseInt(line1, this.RADIX);
+			int i2 = Integer.parseInt(line2, this.RADIX);
+			
+			if(i1 < i2){
+				oline = Cons.toString(i1);
+				line1 = "";
+			}
+			else{
+				oline = Cons.toString(i2);
+				line2 = "";
+			}
+			
+			
+			writer.write(oline);
+		}
+		
+		if(line1 != null && line2 == null){
+			oline = line1 + this.NEW_LINE;
+			writer.write(oline);
+			oline = "";
+			while(true){
+				oline = a.getLine();
+				if(oline == null)
+					break;
+				oline = oline + this.NEW_LINE;
+				writer.write(oline);
+			}
+		}
+		
+		else if(line2 != null && line1 == null){
+			oline = line2 + this.NEW_LINE;
+			writer.write(oline);
+			oline = "";
+			while(true){
+				oline = b.getLine();
+				if(oline == null)
+					break;
+				oline = oline + this.NEW_LINE;
+				writer.write(oline);
+			}
+		}
+		
+				
+		writer.close();
+
+		a.close();
+		b.close();
+		
+		File f1 = new File(a.getPath());
+		File f2 = new File(b.getPath());
+		
+		if(!f1.delete() || !f2.delete())
+			throw new IOException();
+
+		file.renameTo(f1);
+		
+		return_node = new ValidNode(a.getPath(), (a.size() + b.size()));
+		
+		
+		
+		
+		return return_node;
+		
 	}
 
 }

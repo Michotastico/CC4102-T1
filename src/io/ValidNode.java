@@ -39,11 +39,21 @@ public class ValidNode implements AdaptiveNode {
 	}
 
 	@Override
-	public int getValue() throws IOException {
+	public String getLine() throws IOException {
 		String next_line = reader.readLine();
-		String line = next_line.replace(this.NEW_LINE, "");
-		int number = Integer.parseInt(line, this.RADIX);
-		return number;
+		if(next_line != null)
+			next_line = next_line.replace(this.NEW_LINE, "");
+		return next_line;
+	}
+
+	@Override
+	public int compareTo(AdaptiveNode o) {
+		return Integer.compare(this.size(), o.size());
+	}
+
+	@Override
+	public String getPath() {
+		return this.path;
 	}
 
 }
