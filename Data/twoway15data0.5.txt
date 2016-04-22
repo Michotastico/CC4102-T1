@@ -1,0 +1,3 @@
+Initial_time : 1461334505423
+Final_time : 1461334506803
+Delta : 1380
